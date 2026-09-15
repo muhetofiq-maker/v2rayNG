@@ -92,7 +92,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}/V2rayNG
           echo "sdk.dir=${ANDROID_HOME}" > local.properties
-          chmod 755 gradlew
+          chmod +x gradlew
           ./gradlew assembleDebug
 
       - name: Upload Debug APK
@@ -101,3 +101,14 @@ jobs:
         with:
           name: MameV2Ray-debug
           path: ${{ github.workspace }}/V2rayNG/app/build/outputs/apk/debug/*.apk
+
+      - name: Upload APK to Release
+        uses: softprops/action-gh-release@v1
+        if: success()
+        with:
+          files: V2rayNG/app/build/outputs/apk/debug/*.apk
+          tag_name: v1.0.0-${{ github.run_number }}
+          name: MameV2Ray Release ${{ github.run_number }}
+          body: 'Automatic built APK for MameV2Ray.'
+        env:
+          GITHUB_TOKEN: ${{ github.TOKEN }}
