@@ -129,21 +129,4 @@ jobs:
         name: universal-apk
         path: ${{ github.workspace }}/V2rayNG/app/build/outputs/apk/*/release/*universal*.apk
 
-  sign-and-release:
-    needs: build
-    runs-on: ubuntu-26.04
-    if: github.event_name == 'workflow_dispatch' && inputs.release_tag != ''
-
-    steps:
-      - name: Download APK artifacts
-        uses: actions/download-artifact@v8
-        with:
-          path: 
-
-      - name: Upload APKs, signatures and public key to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-    
-          tag: ${{ inputs.release_tag }}
-          file_glob: true
-          prerelease: true
+  
